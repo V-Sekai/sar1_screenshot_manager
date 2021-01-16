@@ -125,14 +125,15 @@ func capture_screenshot(p_info: Dictionary) -> void:
 		emit_signal("screenshot_requested", p_info, callback)
 
 func _input(p_event: InputEvent) -> void:
-	if p_event.is_action_pressed("screenshot"):
-		var screenshot_path_callback: FuncRef = FuncRef.new()
-		screenshot_path_callback.set_instance(self)
-		screenshot_path_callback.set_function("_date_and_time_screenshot")
-		
-		capture_screenshot(
-			{
-				"screenshot_path_callback":screenshot_path_callback,
-				"screenshot_type":"screenshot",
-				"screenshot_directory":"user://screenshots"
-			})
+	if !Engine.is_editor_hint():
+		if p_event.is_action_pressed("screenshot"):
+			var screenshot_path_callback: FuncRef = FuncRef.new()
+			screenshot_path_callback.set_instance(self)
+			screenshot_path_callback.set_function("_date_and_time_screenshot")
+			
+			capture_screenshot(
+				{
+					"screenshot_path_callback":screenshot_path_callback,
+					"screenshot_type":"screenshot",
+					"screenshot_directory":"user://screenshots"
+				})
