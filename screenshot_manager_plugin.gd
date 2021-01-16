@@ -22,7 +22,7 @@ func _enter_tree() -> void:
 	editor_interface = get_editor_interface()
 
 	add_autoload_singleton(
-		"ScreenshotManager", "res://addons/screenshot_manager/screenshot_manager.gd"
+		"ScreenshotManager", "res://addons/sar1_screenshot_manager/screenshot_manager.gd"
 	)
 
 
