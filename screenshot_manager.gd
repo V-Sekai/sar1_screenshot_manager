@@ -49,7 +49,6 @@ static func _date_and_time_screenshot(p_info: Dictionary) -> Dictionary:
 	
 	var screenshot_directory: String = p_info["screenshot_directory"]
 	
-	var screenshot_number: int = 0
 	var screenshot_path_and_prefix: String = _get_screenshot_path_and_prefix(screenshot_directory)
 	var time: Dictionary = OS.get_datetime()
 	var date_time_string: String = "%s_%02d_%02d_%02d%02d%02d" % [
