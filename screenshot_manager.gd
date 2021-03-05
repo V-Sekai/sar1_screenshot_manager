@@ -139,3 +139,6 @@ func _input(p_event: InputEvent) -> void:
 					"screenshot_type":"screenshot",
 					"screenshot_directory":"user://screenshots"
 				})
+
+func _ready():
+	pause_mode = PAUSE_MODE_PROCESS
