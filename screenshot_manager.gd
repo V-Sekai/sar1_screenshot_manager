@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node
 
 var pending: bool = false
@@ -70,10 +70,10 @@ func _unsafe_serialize_screenshot(p_userdata: Dictionary) -> Dictionary:
 	var info: Dictionary = p_userdata["info"]
 	var image: Image = p_userdata["image"]
 	
-	var screenshot_path_callback: FuncRef = info["screenshot_path_callback"]
+	var screenshot_path_callback: Callable = info["screenshot_path_callback"]
 	var error: int = FAILED
 	
-	var result: Dictionary = screenshot_path_callback.call_func(info)
+	var result: Dictionary = screenshot_path_callback.call(info)
 	error = result["error"]
 	if error == OK:
 		error = apply_screenshot_flip(image).save_png(result["path"])
@@ -120,18 +120,14 @@ func capture_screenshot(p_info: Dictionary) -> void:
 		pending = true
 		print("Capturing screenshot (%s)..." % p_info["screenshot_type"])
 		
-		var callback = FuncRef.new()
-		callback.set_instance(self)
-		callback.set_function("_screenshot_captured")
+		var callback: Callable = Callable(self, "_screenshot_captured")
 		
 		emit_signal("screenshot_requested", p_info, callback)
 
 func _input(p_event: InputEvent) -> void:
 	if !Engine.is_editor_hint():
 		if p_event.is_action_pressed("screenshot"):
-			var screenshot_path_callback: FuncRef = FuncRef.new()
-			screenshot_path_callback.set_instance(self)
-			screenshot_path_callback.set_function("_date_and_time_screenshot")
+			var screenshot_path_callback: Callable = Callable(self, "_date_and_time_screenshot")
 			
 			capture_screenshot(
 				{
@@ -141,4 +137,4 @@ func _input(p_event: InputEvent) -> void:
 				})
 
 func _ready():
-	pause_mode = PAUSE_MODE_PROCESS
+	process_mode = PROCESS_MODE_ALWAYS
