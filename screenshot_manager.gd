@@ -108,7 +108,7 @@ func _screenshot_captured(p_info: Dictionary, p_image: Image) -> void:
 					directory_ready = true
 		
 		if directory_ready:
-			if(image_thread.start(self, "_unsafe_serialize_screenshot", 
+			if(image_thread.start(_unsafe_serialize_screenshot, 
 			{
 				"image":p_image,
 				"info":p_info
