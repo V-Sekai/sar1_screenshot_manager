@@ -90,9 +90,9 @@ func _serialize_screenshot_done() -> void:
 	
 	pending = false
 	if err == OK:
-		emit_signal("screenshot_saved", path)
+		screenshot_saved.emit(path)
 	else:
-		emit_signal("screenshot_failed", path, err)
+		screenshot_failed.emit(path, err)
 
 func _screenshot_captured(p_info: Dictionary, p_image: Image) -> void:
 	if(p_image != null):
@@ -120,10 +120,9 @@ func capture_screenshot(p_info: Dictionary) -> void:
 		pending = true
 		print("Capturing screenshot (%s)..." % p_info["screenshot_type"])
 		
-		emit_signal(
-			"screenshot_requested",
+		screenshot_requested.emit(
 			p_info,
-			Callable(self, "_screenshot_captured"))
+			self._screenshot_captured)
 
 func _input(p_event: InputEvent) -> void:
 	if !Engine.is_editor_hint():
