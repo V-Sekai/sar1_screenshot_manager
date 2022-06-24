@@ -108,11 +108,12 @@ func _screenshot_captured(p_info: Dictionary, p_image: Image) -> void:
 					directory_ready = true
 		
 		if directory_ready:
-			if(image_thread.start(_unsafe_serialize_screenshot, 
-			{
+			var callable : Callable = Callable(self, "_unsafe_serialize_screenshot")
+			callable.bind({
 				"image":p_image,
 				"info":p_info
-			}) != OK):
+			})
+			if image_thread.start(callable) != OK:
 				printerr("Could not create start processing thread!")
 
 func capture_screenshot(p_info: Dictionary) -> void:
