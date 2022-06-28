@@ -108,8 +108,8 @@ func _screenshot_captured(p_info: Dictionary, p_image: Image) -> void:
 					directory_ready = true
 		
 		if directory_ready:
-			var callable : Callable = Callable(self, "_unsafe_serialize_screenshot")
-			callable.bind({
+			var callable : Callable = self._unsafe_serialize_screenshot
+			callable = callable.bind({
 				"image":p_image,
 				"info":p_info
 			})
