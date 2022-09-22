@@ -24,7 +24,7 @@ static func _get_screenshot_path_and_prefix(p_screenshot_directory: String) -> S
 	return "%s/screenshot_" % p_screenshot_directory
 	
 static func _incremental_screenshot(p_info: Dictionary) -> Dictionary:
-	var file: File = File.new()
+	var file: FileAccess = FileAccess.new()
 	var err: int = OK
 	var path: String = ""
 	
@@ -43,7 +43,7 @@ static func _incremental_screenshot(p_info: Dictionary) -> Dictionary:
 	return {"error":err, "path":path}
 	
 static func _date_and_time_screenshot(p_info: Dictionary) -> Dictionary:
-	var file: File = File.new()
+	var file: FileAccess = FileAccess.new()
 	var err: int = OK
 	var path: String = ""
 	
@@ -99,8 +99,8 @@ func _screenshot_captured(p_info: Dictionary, p_image: Image) -> void:
 		var directory_ready: bool = false
 		var screenshot_directory: String = p_info["screenshot_directory"]
 		
-		var dir = Directory.new()
-		if(dir.open("user://") == OK):
+		var dir : DirAccess = DirAccess.open("user://")
+		if dir.is_valid():
 			if(dir.dir_exists(screenshot_directory)):
 				directory_ready = true
 			else:
