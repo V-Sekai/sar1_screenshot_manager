@@ -100,8 +100,8 @@ func _screenshot_captured(p_info: Dictionary, p_image: Image) -> void:
 		var screenshot_directory: String = p_info["screenshot_directory"]
 		
 		var dir : DirAccess = DirAccess.open("user://")
-		if dir.is_valid():
-			if(dir.dir_exists(screenshot_directory)):
+		if dir:
+			if dir.dir_exists(screenshot_directory):
 				directory_ready = true
 			else:
 				if dir.make_dir(screenshot_directory) == OK:
