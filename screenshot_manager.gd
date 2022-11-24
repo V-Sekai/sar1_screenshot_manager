@@ -1,6 +1,8 @@
 @tool
 extends Node
 
+const screenshot_manager_const = preload("res://addons/sar1_screenshot_manager/screenshot_manager.gd")
+
 var pending: bool = false
 var image_thread: Thread = Thread.new()
 
@@ -24,7 +26,6 @@ static func _get_screenshot_path_and_prefix(p_screenshot_directory: String) -> S
 	return "%s/screenshot_" % p_screenshot_directory
 	
 static func _incremental_screenshot(p_info: Dictionary) -> Dictionary:
-	var file: FileAccess = FileAccess.new()
 	var err: int = OK
 	var path: String = ""
 	
@@ -32,7 +33,7 @@ static func _incremental_screenshot(p_info: Dictionary) -> Dictionary:
 	
 	var screenshot_number: int = 0
 	var screenshot_path_and_prefix: String = _get_screenshot_path_and_prefix(screenshot_directory)
-	while((file.file_exists(screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGET_LENGTH) + ".png"))):
+	while((FileAccess.file_exists(screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGET_LENGTH) + ".png"))):
 		screenshot_number += 1
 	
 	if(screenshot_number <= MAX_INCREMENTAL_FILES):
@@ -43,7 +44,6 @@ static func _incremental_screenshot(p_info: Dictionary) -> Dictionary:
 	return {"error":err, "path":path}
 	
 static func _date_and_time_screenshot(p_info: Dictionary) -> Dictionary:
-	var file: FileAccess = FileAccess.new()
 	var err: int = OK
 	var path: String = ""
 	
@@ -59,7 +59,7 @@ static func _date_and_time_screenshot(p_info: Dictionary) -> Dictionary:
 		time['minute'],
 		time['second']]
 	
-	if(!file.file_exists(screenshot_path_and_prefix + date_time_string + ".png")):
+	if(!FileAccess.file_exists(screenshot_path_and_prefix + date_time_string + ".png")):
 		path = screenshot_path_and_prefix + date_time_string + ".png"
 	else:
 		err = ERR_FILE_ALREADY_IN_USE
@@ -76,7 +76,7 @@ func _unsafe_serialize_screenshot(p_userdata: Dictionary) -> Dictionary:
 	var result: Dictionary = screenshot_path_callback.call(info)
 	error = result["error"]
 	if error == OK:
-		error = apply_screenshot_flip(image).save_png(result["path"])
+		error = screenshot_manager_const.apply_screenshot_flip(image).save_png(result["path"])
 	
 	call_deferred("_serialize_screenshot_done")
 	
