@@ -36,7 +36,9 @@ static func _incremental_screenshot(p_info: Dictionary) -> Dictionary:
 
 	var screenshot_number: int = 0
 	var screenshot_path_and_prefix: String = _get_screenshot_path_and_prefix(screenshot_directory)
-	while FileAccess.file_exists(screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGET_LENGTH) + ".png"):
+	while FileAccess.file_exists(
+		screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGET_LENGTH) + ".png"
+	):
 		screenshot_number += 1
 
 	if screenshot_number <= MAX_INCREMENTAL_FILES:
@@ -55,7 +57,10 @@ static func _date_and_time_screenshot(p_info: Dictionary) -> Dictionary:
 
 	var screenshot_path_and_prefix: String = _get_screenshot_path_and_prefix(screenshot_directory)
 	var time: Dictionary = Time.get_datetime_dict_from_system()
-	var date_time_string: String = "%s_%02d_%02d_%02d%02d%02d" % [time["year"], time["month"], time["day"], time["hour"], time["minute"], time["second"]]
+	var date_time_string: String = (
+		"%s_%02d_%02d_%02d%02d%02d"
+		% [time["year"], time["month"], time["day"], time["hour"], time["minute"], time["second"]]
+	)
 
 	if !FileAccess.file_exists(screenshot_path_and_prefix + date_time_string + ".png"):
 		path = screenshot_path_and_prefix + date_time_string + ".png"
@@ -127,7 +132,11 @@ func _input(p_event: InputEvent) -> void:
 	if !Engine.is_editor_hint():
 		if p_event.is_action_pressed("screenshot"):
 			capture_screenshot(
-				{"screenshot_path_callback": Callable(self, "_date_and_time_screenshot"), "screenshot_type": "screenshot", "screenshot_directory": "user://screenshots"}
+				{
+					"screenshot_path_callback": Callable(self, "_date_and_time_screenshot"),
+					"screenshot_type": "screenshot",
+					"screenshot_directory": "user://screenshots"
+				}
 			)
 
 
