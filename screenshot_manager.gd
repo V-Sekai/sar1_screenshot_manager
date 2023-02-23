@@ -11,7 +11,7 @@ signal screenshot_saved(p_path)
 signal screenshot_failed(p_path, p_err)
 
 const MAX_INCREMENTAL_FILES = 99999
-const INCREMENTAL_DIGET_LENGTH = 5
+const INCREMENTAL_DIGIT_LENGTH = 5
 
 ##############
 # Screenshot #
@@ -37,12 +37,12 @@ static func _incremental_screenshot(p_info: Dictionary) -> Dictionary:
 	var screenshot_number: int = 0
 	var screenshot_path_and_prefix: String = _get_screenshot_path_and_prefix(screenshot_directory)
 	while FileAccess.file_exists(
-		screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGET_LENGTH) + ".png"
+		screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGIT_LENGTH) + ".png"
 	):
 		screenshot_number += 1
 
 	if screenshot_number <= MAX_INCREMENTAL_FILES:
-		path = screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGET_LENGTH) + ".png"
+		path = screenshot_path_and_prefix + str(screenshot_number).pad_zeros(INCREMENTAL_DIGIT_LENGTH) + ".png"
 	else:
 		err = FAILED
 
